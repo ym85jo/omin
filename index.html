@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선수 명단</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body { padding: 10px; }
+        .container { max-width: 400px; margin: 0 auto; }
+        table { width: 100%; }
+        input { width: 100%; }
+        .delete-btn { cursor: pointer; color: gray; border: none; background: none; font-size: 1em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>OHZZ FS</h2>
+        <input type="text" id="playerName" placeholder="선수 이름을 입력하세요">
+        <!-- <button onclick="addPlayer()">추가</button> -->
+        
+        <table>
+          <thead>
+            <tr id="trHead">
+            </tr>
+          </thead>
+          <tbody id="tbodyLineup"></tbody>
+      </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>선수 이름</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="playerList"></tbody>
+        </table>
+
+        
+    </div>
+    
+    <script>
+        let players = [];
+        
+        function addPlayer() {
+            const playerNameInput = document.getElementById("playerName");
+            const playerName = playerNameInput.value.trim();
+            
+            if (playerName !== "") {
+                players.push(playerName);
+                updateTable();
+                playerNameInput.value = "";
+            }
+        }
+
+        function removePlayer(index) {
+            players.splice(index, 1);
+            updateTable();
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById("playerList");
+            tableBody.innerHTML = "";
+            players.forEach((player, index) => {
+                const row = `<tr>
+                                <td>${index + 1}</td>
+                                <td>${player}</td>
+                                <td><button class='delete-btn' onclick='removePlayer(${index})'>&#128465;</button></td>
+                             </tr>`;
+                tableBody.innerHTML += row;
+            });
+
+            const trHead = document.getElementById("trHead");
+            let trHeadHtml = "<th>경기</th>"
+            players.forEach((player, index) => {
+              trHeadHtml += `<th>${player}</th>`;
+            });
+            trHead.innerHTML = trHeadHtml;
+
+            // 
+            var playArray = [];
+            var totalCnt = players.length;
+            var playCnt = 5;
+            for(var i = 0; i < 10; i ++){
+              var playArrayTemp = []
+              for(var k = 0; k < 5; k++){
+                playArrayTemp.push((i*playCnt + k) % totalCnt)
+              }
+              playArray.push(playArrayTemp)
+            }  
+
+            const tbodyLineup = document.getElementById("tbodyLineup");
+            let tbodyLineupHtml = "";
+            let playerCnt = 0;
+            for (let i = 0; i < 10; i++) {
+              tbodyLineupHtml += `<tr><th>${i+1}</th>`;
+              players.forEach((player, index) => {
+                console.log(playArray[i], index, playArray[i].indexOf(index))
+                if(playArray[i].indexOf(index) > -1){
+                  tbodyLineupHtml += `<td>P</td>`;
+                } else {
+                  tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;
+                }
+                
+              });  
+              tbodyLineupHtml += `</tr>`
+            }
+            tbodyLineup.innerHTML = tbodyLineupHtml;
+
+        }
+        
+        document.getElementById("playerName").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                addPlayer();
+            }
+        });
+
+        
+    </script>
+</body>
+</html>
