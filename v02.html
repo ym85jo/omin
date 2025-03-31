@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팀 나누기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            font-size: 12px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .left-panel {
+            width: 35%;
+        }
+        .right-panel {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .team {
+            min-height: 60px;
+            padding: 3px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 10px;
+        }
+        .draggable {
+            padding: 2px;
+            margin: 2px 0;
+            background: #007bff;
+            color: white;
+            cursor: grab;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+        }
+        textarea {
+            font-size: 10px;
+            height: 40px;
+        }
+        button {
+            font-size: 10px;
+            padding: 3px 5px;
+        }
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+            .team {
+                min-height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h2 style="font-size: 12px; margin-bottom: 3px;">배정할 인원</h2>
+            <label for="names" style="font-size: 10px;">이름 목록 (각 줄에 한 명씩 입력하세요):</label>
+            <textarea id="names" rows="3"></textarea>
+            <button onclick="addNames()">이름 추가</button>
+            <h3 style="font-size: 12px; margin-bottom: 3px;">배정되지 않은 인원</h3>
+            <div id="unassigned" class="team"></div>
+        </div>
+        <div class="right-panel">
+            <div id="team1" class="team">
+                <h3 style="font-size: 12px;">팀 1</h3>
+            </div>
+            <div id="team2" class="team">
+                <h3 style="font-size: 12px;">팀 2</h3>
+            </div>
+            <div id="team3" class="team">
+                <h3 style="font-size: 12px;">팀 3</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
