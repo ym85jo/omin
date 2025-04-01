@@ -3,124 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>선수 명단</title>
+    <title>민영조</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
     <style>
-        body { padding: 10px; }
-        .container { max-width: 400px; margin: 0 auto; }
-        table { width: 100%; }
-        input { width: 100%; }
-        .delete-btn { cursor: pointer; color: gray; border: none; background: none; font-size: 1em; }
-        td, th{
-          padding : 1rem 1rem
+        body {
+            font-size: 14px;
+        }
+        .container-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .left-panel {
+            width: 40%;
+        }
+        .right-panel {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .team {
+            min-height: 80px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            font-size: 12px;
+            flex-wrap:wrap;
+        }
+        .draggable {
+            padding: 5px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            cursor: grab;
+            text-align: center;
+            font-size: 12px;
+        }
+        textarea {
+            font-size: 12px;
+            height: 50px;
+        }
+        button {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        @media (max-width: 768px) {
+            .container-top {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .left-panel, .right-panel {
+                width: 50%;
+            }
+            .right-panel {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        .team>h3{
+            width : 100%;
+            margin-bottom:3px;
+        }
+        .container>h3{
+            font-size:16px;
+            font-weight : bold;
+            margin-bottom : 0;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h2>OHZZ FS</h2>
-        <input type="text" id="playerName" placeholder="선수 이름을 입력하세요">
-        <!-- <button onclick="addPlayer()">추가</button> -->
-        
-        <table>
-          <thead>
-            <tr id="trHead">
-            </tr>
-          </thead>
-          <tbody id="tbodyLineup"></tbody>
-      </table>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>선수 이름</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="playerList"></tbody>
-        </table>
-
-        
-    </div>
-    
     <script>
-        let players = [];
-        
-        function addPlayer() {
-            const playerNameInput = document.getElementById("playerName");
-            const playerName = playerNameInput.value.trim();
-            
-            if (playerName !== "") {
-                players.push(playerName);
-                updateTable();
-                playerNameInput.value = "";
+        let order = 0;
+
+        function addNames() {
+            const namesInput = document.getElementById("names");
+            const names = namesInput.value.split("\n").map(name => name.trim()).filter(name => name !== "");
+            const list = document.getElementById("unassigned");
+            names.forEach(name => {
+                const item = document.createElement("div");
+                item.className = "draggable";
+                item.draggable = true;
+                item.innerText = name;
+                item.dataset.order = order++;
+                item.dataset.name = names;
+                item.addEventListener("dragstart", dragStart);
+                list.appendChild(item);
+            });
+            namesInput.value = "";
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                addNames();
             }
         }
 
-        function removePlayer(index) {
-            players.splice(index, 1);
-            updateTable();
+        function dragStart(event) {
+            event.dataTransfer.setData("text", event.target.dataset.order);
         }
 
-        function updateTable() {
-            const tableBody = document.getElementById("playerList");
-            tableBody.innerHTML = "";
-            players.forEach((player, index) => {
-                const row = `<tr>
-                                <td>${index + 1}</td>
-                                <td>${player}</td>
-                                <td><button class='delete-btn' onclick='removePlayer(${index})'>&#128465;</button></td>
-                             </tr>`;
-                tableBody.innerHTML += row;
-            });
+        function allowDrop(event) {
+            event.preventDefault();
+        }
 
-            const trHead = document.getElementById("trHead");
-            let trHeadHtml = "<th>경기</th>"
-            players.forEach((player, index) => {
-              trHeadHtml += `<th>${player}</th>`;
+        function drop(event) {
+            event.preventDefault();
+            const order = event.dataTransfer.getData("text");
+            const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
+            if (draggedElements.length > 0) {
+                const targetTeam = event.target.closest(".team");
+                if (targetTeam) {
+                    targetTeam.appendChild(draggedElements[0]);
+                    sortTeam(targetTeam);
+                }
+            }
+            const teams = document.querySelectorAll('.right-panel .team');
+            teams.forEach(function(team){
+              makeGrid(team);  
+            })
+        }
+
+        function sortTeam(team) {
+            const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
+            members.sort((a, b) => parseInt(a.dataset.order) - parseInt(b.dataset.order));
+            members.forEach(member => team.appendChild(member));
+        }
+
+        function makeGrid(team){
+
+            const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
+            let teamno = team.dataset.teamno;
+            
+            const trHead = document.getElementById("tr" + teamno);
+            let trHeadHtml = "<th></th>"
+            members.forEach((member, index) => {
+              trHeadHtml += `<td>${member.dataset.name}</td>`;
             });
             trHead.innerHTML = trHeadHtml;
 
-            // 
             var playArray = [];
-            var totalCnt = players.length;
-            var playCnt = 5;
+            var restArray = [];
+
+            var keeperCount = new Array(members.length).fill(0);
+            var keeperPlayer = new Array(members.length).fill(-1);
+            
+            var totalCnt = members.length;
+            var playerCount = Number(document.getElementById('playerCount').value);
             for(var i = 0; i < 10; i ++){
-              var playArrayTemp = []
-              for(var k = 0; k < 5; k++){
-                playArrayTemp.push((i*playCnt + k) % totalCnt)
+              
+              var playArrayTemp = [];
+              var restArrayTemp = []
+                
+              for(var k = 0; k < playerCount; k++){
+                playArrayTemp.push((i*playerCount + k) % totalCnt)
               }
-              playArray.push(playArrayTemp)
+
+              for(var k = playerCount; k < totalCnt; k++){
+                restArrayTemp.push((i*playerCount + k) % totalCnt)
+              }
+
+              let keeperIndex = -1;
+              restArrayTemp.forEach(function(r){
+                if(keeperIndex == -1) keeperIndex = r;
+                if(keeperCount[keeperIndex] > keeperCount[r]) keeperIndex = r;
+              })
+
+              keeperCount[keeperIndex] = keeperCount[keeperIndex] + 1;
+              keeperPlayer[i] = keeperIndex;
+                
+              playArray.push(playArrayTemp);
+              restArray.push(restArrayTemp);
+                
             }  
 
-            const tbodyLineup = document.getElementById("tbodyLineup");
+            const tbodyLineup = document.getElementById("tbody" + teamno);
             let tbodyLineupHtml = "";
             let playerCnt = 0;
             for (let i = 0; i < 10; i++) {
-              tbodyLineupHtml += `<tr><th>${i+1}</th>`;
-              players.forEach((player, index) => {
-                console.log(playArray[i], index, playArray[i].indexOf(index))
+              tbodyLineupHtml += `<tr><td>${i+1}</td>`;
+              members.forEach((member, index) => {
                 if(playArray[i].indexOf(index) > -1){
                   tbodyLineupHtml += `<td>P</td>`;
                 } else {
-                  tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;
-                }
-                
+                  if(keeperPlayer[i] == index){
+                      tbodyLineupHtml += `<td style="color:#ee7762">K</td>`;
+                  } else {
+                      tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;    
+                  }
+                  
+                }                
               });  
               tbodyLineupHtml += `</tr>`
             }
             tbodyLineup.innerHTML = tbodyLineupHtml;
-
+           
         }
-        
-        document.getElementById("playerName").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                addPlayer();
-            }
-        });
-
-        
     </script>
+</head>
+<body>
+    <h1 style="font-size: 20px; font-weight:bold; margin: 10px auto;">팀 나누기</h1>
+    <div class="container-top">
+        <div class="left-panel">
+            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">플레이어 이름</h2>
+            <input type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></input>
+            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">대기자 명단</h3>
+            <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        </div>
+        <div class="right-panel">
+            <div id="team1" data-teamno="1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 16px; font-weight:bold;">팀 1</h3>
+            </div>
+            <div id="team2" data-teamno="2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 16px; font-weight:bold;">팀 2</h3>
+            </div>
+            <div id="team3" data-teamno="3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 16px; font-weight:bold;">팀 3</h3>
+            </div>
+        </div>
+    </div>
+
+    <hr/>
+    
+    <label for="playerCount" style="font-size: 12px;">필드 인원수</label>
+    <select id="playerCount" style="font-size: 12px; padding: 3px;">
+        <option value="4" selected>4명</option>
+        <option value="5">5명</option>
+        <option value="6">6명</option>
+        <option value="7">7명</option>
+        <option value="8">8명</option>
+        <option value="9">9명</option>
+        <option value="10">10명</option>
+    </select>
+    
+    <div class="container">
+        <h3>팀 1</h3>
+        <table>
+            <thead>
+                <tr id="tr1">
+                </tr>    
+            </thead>
+            <tbody id="tbody1"></tbody>
+        </table>
+
+        <h3>팀 2</h3>
+        <table>
+            <thead>
+                <tr id="tr2">
+                </tr>    
+            </thead>
+            <tbody id="tbody2"></tbody>
+        </table>
+
+        <h3>팀 3</h3>
+        <table>
+            <thead>
+                <tr id="tr3">
+                </tr>    
+            </thead>
+            <tbody id="tbody3"></tbody>
+        </table>
+    </div>
 </body>
 </html>
