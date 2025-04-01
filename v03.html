@@ -124,9 +124,9 @@
                 }
             }
             const teams = document.querySeleAll('.rigth-panel .team');
-            teams.forEach(team, i){
-                makeGrid(team);
-            }
+            teams.forEach(function(team){
+              makeGrid(team);  
+            })
         }
 
         function sortTeam(team) {
