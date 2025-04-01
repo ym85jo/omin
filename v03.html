@@ -116,6 +116,7 @@
                 if (targetTeam) {
                     targetTeam.appendChild(draggedElements[0]);
                     sortTeam(targetTeam);
+                    makeGrid(targetTeam);
                 }
             }
         }
@@ -124,6 +125,10 @@
             const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
             members.sort((a, b) => parseInt(a.dataset.order) - parseInt(b.dataset.order));
             members.forEach(member => team.appendChild(member));
+        }
+
+        function makeGrid(team){
+            
         }
     </script>
 </head>
