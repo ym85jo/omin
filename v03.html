@@ -9,7 +9,7 @@
         body {
             font-size: 14px;
         }
-        .container {
+        .container-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -54,7 +54,7 @@
             padding: 5px 10px;
         }
         @media (max-width: 768px) {
-            .container {
+            .container-top {
                 flex-direction: row;
                 flex-wrap: nowrap;
                 overflow-x: auto;
@@ -133,7 +133,7 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="container-top">
         <div class="left-panel">
             <h2 style="font-size: 14px; margin-bottom: 5px;">팀 정하기</h2>
             <textarea id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
@@ -151,6 +151,19 @@
                 <h3 style="font-size: 14px;">팀 3</h3>
             </div>
         </div>
+    </div>
+
+    <hr/>
+
+    <div class="container">
+        <h3 style="font-size: 14px;">팀 3</h3>
+        <table>
+            <thead>
+                <tr id="tr1">
+                </tr>    
+            </thead>
+            <tbody id="tbody1"></tbody>
+        </table>
     </div>
 </body>
 </html>
