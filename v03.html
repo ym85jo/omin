@@ -37,8 +37,8 @@
             flex-wrap:wrap;
         }
         .draggable {
-            padding: 4px;
-            margin: 4px;
+            padding: 5px;
+            margin: 5px;
             background: #007bff;
             color: white;
             cursor: grab;
@@ -154,7 +154,7 @@
             let tbodyLineupHtml = "";
             let playerCnt = 0;
             for (let i = 0; i < 10; i++) {
-              tbodyLineupHtml += `<tr><th>${i+1}</th>`;
+              tbodyLineupHtml += `<tr><td>${i+1}</td>`;
               members.forEach((member, index) => {
                 if(playArray[i].indexOf(index) > -1){
                   tbodyLineupHtml += `<td>P</td>`;
