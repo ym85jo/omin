@@ -148,6 +148,11 @@
             trHead.innerHTML = trHeadHtml;
 
             var playArray = [];
+            var restArray = [];
+
+            var keeperCount = new Array(members.length).fill(0);
+            var keeperPlayer = new Array(members.length).fill(-1);
+            
             var totalCnt = members.length;
             var playCnt = 5;
             for(var i = 0; i < 10; i ++){
@@ -155,7 +160,23 @@
               for(var k = 0; k < 5; k++){
                 playArrayTemp.push((i*playCnt + k) % totalCnt)
               }
-              playArray.push(playArrayTemp)
+
+              for(var k = 5; k < totalCnt; k++){
+                restArrayTemp.push((i*playCnt + k) % totalCnt)
+              }
+
+              let keeperIndex = -1;
+              restArrayTemp.forEach(function(r){
+                if(keeperIndex == -1) keeperIndex = r;
+                if(keeperCount[keeperIndex] > keeperCount[r]) keeperIndex = r;
+              })
+
+              keeperCount[keeperIndex] = keeperCount[keeperIndex] + 1;
+              keeperPlayer[i] = keeperIndex;
+                
+              playArray.push(playArrayTemp);
+              restArray.push(restArrayTemp);
+                
             }  
 
             const tbodyLineup = document.getElementById("tbody" + teamno);
@@ -167,7 +188,12 @@
                 if(playArray[i].indexOf(index) > -1){
                   tbodyLineupHtml += `<td>P</td>`;
                 } else {
-                  tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;
+                  if(keeperPlayer[i] == index){
+                      tbodyLineupHtml += `<td style="color:#ee7762">K</td>`;
+                  } else {
+                      tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;    
+                  }
+                  
                 }                
               });  
               tbodyLineupHtml += `</tr>`
