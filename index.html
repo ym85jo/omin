@@ -207,12 +207,12 @@
     </script>
 </head>
 <body>
-    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 멤버 선정</h1>
+    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 팀원 선정</h1>
     <div class="container-top">
         <div class="left-panel">
-            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">플레이어 이름</h2>
+            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">선수명</h2>
             <input type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></input>
-            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">대기자 명단</h3>
+            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">선수 명단</h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
         </div>
         <div class="right-panel">
@@ -249,7 +249,7 @@
         <option value="5">5경기</option>
         <option value="6">6경기</option>
         <option value="7">7경기</option>
-        <option value="8">8경기</option>
+        <option value="8" selected>8경기</option>
         <option value="9">9경기</option>
         <option value="10">10경기</option>
     </select>
