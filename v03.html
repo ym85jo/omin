@@ -71,8 +71,8 @@
             width : 100%;
             margin-bottom:3px;
         }
-        .container>>h3{
-            font-size:18px;
+        .container>h3{
+            font-size:16px;
             font-weight : bold;
             margin-bottom : 0;
         }
@@ -177,20 +177,20 @@
 <body>
     <div class="container-top">
         <div class="left-panel">
-            <h2 style="font-size: 14px; margin-bottom: 5px;">플레이어 이름</h2>
+            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">플레이어 이름</h2>
             <input type="text" id="names" rows="3" onkeypress="handleKeyPress(event)"></input>
-            <h3 style="font-size: 14px; margin-bottom: 5px;">대기자 명단</h3>
+            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">대기자 명단</h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
         </div>
         <div class="right-panel">
             <div id="team1" data-teamno="1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 14px;">팀 1</h3>
+                <h3 style="font-size: 16px; font-weight:bold;">팀 1</h3>
             </div>
             <div id="team2" data-teamno="2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 14px;">팀 2</h3>
+                <h3 style="font-size: 16px; font-weight:bold;">팀 2</h3>
             </div>
             <div id="team3" data-teamno="3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 14px;">팀 3</h3>
+                <h3 style="font-size: 16px; font-weight:bold;">팀 3</h3>
             </div>
         </div>
     </div>
