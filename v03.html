@@ -121,8 +121,11 @@
                 if (targetTeam) {
                     targetTeam.appendChild(draggedElements[0]);
                     sortTeam(targetTeam);
-                    makeGrid(targetTeam);
                 }
+            }
+            const teams = document.querySeleAll('.rigth-panel .team');
+            teams.forEach(team, i){
+                makeGrid(team);
             }
         }
 
