@@ -154,18 +154,18 @@
             var keeperPlayer = new Array(members.length).fill(-1);
             
             var totalCnt = members.length;
-            var playCnt = 5;
+            var playerCount = Number(document.getElementById('playerCount').value);
             for(var i = 0; i < 10; i ++){
               
               var playArrayTemp = [];
               var restArrayTemp = []
                 
-              for(var k = 0; k < 5; k++){
-                playArrayTemp.push((i*playCnt + k) % totalCnt)
+              for(var k = 0; k < playerCount; k++){
+                playArrayTemp.push((i*playerCount + k) % totalCnt)
               }
 
-              for(var k = 5; k < totalCnt; k++){
-                restArrayTemp.push((i*playCnt + k) % totalCnt)
+              for(var k = playerCount; k < totalCnt; k++){
+                restArrayTemp.push((i*playerCount + k) % totalCnt)
               }
 
               let keeperIndex = -1;
