@@ -207,7 +207,7 @@
     </script>
 </head>
 <body>
-    <h1 style="font-size: 20px; font-weight:bold; margin: 10px auto;">팀 나누기</h1>
+    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 멤버 선정</h1>
     <div class="container-top">
         <div class="left-panel">
             <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">플레이어 이름</h2>
@@ -229,10 +229,12 @@
     </div>
 
     <hr/>
+
+    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 경기 설정</h1>
     
-    <label for="playerCount" style="font-size: 12px;">필드 인원수</label>
+    <label for="playerCount" style="font-size: 12px;">필드 인원 수</label>
     <select id="playerCount" style="font-size: 12px; padding: 3px;">
-        <option value="4" selected>4명</option>
+        <option value="4">4명</option>
         <option value="5" selected>5명</option>
         <option value="6">6명</option>
         <option value="7">7명</option>
@@ -240,6 +242,26 @@
         <option value="9">9명</option>
         <option value="10">10명</option>
     </select>
+
+    <label for="totalPlayCount" style="font-size: 12px;">총 경기 수</label>
+    <select id="totalPlayCount" style="font-size: 12px; padding: 3px;">
+        <option value="4">4경기</option>
+        <option value="5">5경기</option>
+        <option value="6">6경기</option>
+        <option value="7">7경기</option>
+        <option value="8">8경기</option>
+        <option value="9">9경기</option>
+        <option value="10">10경기</option>
+    </select>
+
+    <div>
+        <input type="checkbox" id="checkGk"/>
+        <label class="label-inline" for="checkGk"><span class="pin">Goleiro(Goal keeper)</span></span></label>        
+    </div>
+
+    <hr/>
+
+    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 출전 명단</h1>
     
     <div class="container">
         <h3>팀 1</h3>
