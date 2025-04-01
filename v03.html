@@ -123,7 +123,7 @@
                     sortTeam(targetTeam);
                 }
             }
-            const teams = document.querySelectorAll('.rigth-panel .team');
+            const teams = document.querySelectorAll('.right-panel .team');
             teams.forEach(function(team){
               makeGrid(team);  
             })
@@ -156,7 +156,10 @@
             var totalCnt = members.length;
             var playCnt = 5;
             for(var i = 0; i < 10; i ++){
-              var playArrayTemp = []
+              
+              var playArrayTemp = [];
+              var restArrayTemp = []
+                
               for(var k = 0; k < 5; k++){
                 playArrayTemp.push((i*playCnt + k) % totalCnt)
               }
