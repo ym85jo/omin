@@ -135,7 +135,7 @@
             const trHead = document.getElementById("tr" + teamno);
             let trHeadHtml = "<th></th>"
             members.forEach((member, index) => {
-              trHeadHtml += `<th>${member.dataset.name}</th>`;
+              trHeadHtml += `<td>${member.dataset.name}</td>`;
             });
             trHead.innerHTML = trHeadHtml;
 
