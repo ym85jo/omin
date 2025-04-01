@@ -42,7 +42,6 @@
             background: #007bff;
             color: white;
             cursor: grab;
-            width: 100%;
             text-align: center;
             font-size: 12px;
         }
@@ -67,6 +66,10 @@
                 display: flex;
                 flex-direction: column;
             }
+        }
+        .teml>h3{
+            width : 100%;
+            margin-bottom:3px;
         }
     </style>
     <script>
@@ -127,21 +130,19 @@
 <body>
     <div class="container">
         <div class="left-panel">
-            <h2 style="font-size: 14px; margin-bottom: 5px;">배정할 인원</h2>
-            <label for="names" style="font-size: 12px;">이름 목록 (각 줄에 한 명씩 입력하세요):</label>
+            <h2 style="font-size: 14px; margin-bottom: 5px;">팀 정하기</h2>
             <textarea id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
-            <button onclick="addNames()">이름 추가</button>
             <h3 style="font-size: 14px; margin-bottom: 5px;">배정되지 않은 인원</h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
         </div>
         <div class="right-panel">
-            <div id="team1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div id="team1" data-teamno="1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3 style="font-size: 14px;">팀 1</h3>
             </div>
-            <div id="team2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div id="team2" data-teamno="2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3 style="font-size: 14px;">팀 2</h3>
             </div>
-            <div id="team3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div id="team3" data-teamno="3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3 style="font-size: 14px;">팀 3</h3>
             </div>
         </div>
