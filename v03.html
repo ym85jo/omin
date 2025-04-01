@@ -128,7 +128,44 @@
         }
 
         function makeGrid(team){
+
+            const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
+            let teamno = team.dataset.teamno;
             
+            const trHead = document.getElementById("tr" + teamno);
+            let trHeadHtml = "<th></th>"
+            members.forEach((member, index) => {
+              trHeadHtml += `<th>${member.dataset.name}</th>`;
+            });
+            trHead.innerHTML = trHeadHtml;
+
+            var playArray = [];
+            var totalCnt = players.length;
+            var playCnt = 5;
+            for(var i = 0; i < 10; i ++){
+              var playArrayTemp = []
+              for(var k = 0; k < 5; k++){
+                playArrayTemp.push((i*playCnt + k) % totalCnt)
+              }
+              playArray.push(playArrayTemp)
+            }  
+
+            const tbodyLineup = document.getElementById("tbody" + teamno);
+            let tbodyLineupHtml = "";
+            let playerCnt = 0;
+            for (let i = 0; i < 10; i++) {
+              tbodyLineupHtml += `<tr><th>${i+1}</th>`;
+              members.forEach((member, index) => {
+                if(playArray[i].indexOf(index) > -1){
+                  tbodyLineupHtml += `<td>P</td>`;
+                } else {
+                  tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;
+                }                
+              });  
+              tbodyLineupHtml += `</tr>`
+            }
+            tbodyLineup.innerHTML = tbodyLineupHtml;
+           
         }
     </script>
 </head>
