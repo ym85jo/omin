@@ -1,4 +1,151 @@
-<html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팀 나누기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            font-size: 14px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .left-panel {
+            width: 40%;
+        }
+        .right-panel {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .team {
+            min-height: 80px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 12px;
+            flex-wrap:wrap;
+        }
+        .draggable {
+            padding: 3px;
+            margin: 3px 0;
+            background: #007bff;
+            color: white;
+            cursor: grab;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+        }
+        textarea {
+            font-size: 12px;
+            height: 50px;
+        }
+        button {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .left-panel, .right-panel {
+                width: 50%;
+                min-width: 280px;
+            }
+            .right-panel {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+    <script>
+        let order = 0;
 
-  
+        function addNames() {
+            const namesInput = document.getElementById("names");
+            const names = namesInput.value.split("\n").map(name => name.trim()).filter(name => name !== "");
+            const list = document.getElementById("unassigned");
+            names.forEach(name => {
+                const item = document.createElement("div");
+                item.className = "draggable";
+                item.draggable = true;
+                item.innerText = name;
+                item.dataset.order = order++;
+                item.dataset.name = names;
+                item.addEventListener("dragstart", dragStart);
+                list.appendChild(item);
+            });
+            namesInput.value = "";
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                addNames();
+            }
+        }
+
+        function dragStart(event) {
+            event.dataTransfer.setData("text", event.target.dataset.order);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const order = event.dataTransfer.getData("text");
+            const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
+            if (draggedElements.length > 0) {
+                const targetTeam = event.target.closest(".team");
+                if (targetTeam) {
+                    targetTeam.appendChild(draggedElements[0]);
+                    sortTeam(targetTeam);
+                }
+            }
+        }
+
+        function sortTeam(team) {
+            const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
+            members.sort((a, b) => parseInt(a.dataset.order) - parseInt(b.dataset.order));
+            members.forEach(member => team.appendChild(member));
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h2 style="font-size: 14px; margin-bottom: 5px;">배정할 인원</h2>
+            <label for="names" style="font-size: 12px;">이름 목록 (각 줄에 한 명씩 입력하세요):</label>
+            <textarea id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
+            <button onclick="addNames()">이름 추가</button>
+            <h3 style="font-size: 14px; margin-bottom: 5px;">배정되지 않은 인원</h3>
+            <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        </div>
+        <div class="right-panel">
+            <div id="team1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 14px;">팀 1</h3>
+            </div>
+            <div id="team2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 14px;">팀 2</h3>
+            </div>
+            <div id="team3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 14px;">팀 3</h3>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
