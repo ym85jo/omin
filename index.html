@@ -129,10 +129,7 @@
                     sortTeam(targetTeam);
                 }
             }
-            const teams = document.querySelectorAll('.right-panel .team');
-            teams.forEach(function(team){
-              makeGrid(team);  
-            })
+            makeGridAll();
         }
 
         function sortTeam(team) {
@@ -141,6 +138,13 @@
             members.forEach(member => team.appendChild(member));
         }
 
+        function makeGridAll(){
+            const teams = document.querySelectorAll('.right-panel .team');
+            teams.forEach(function(team){
+              makeGrid(team);  
+            });
+        }
+        
         function makeGrid(team){
 
             const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
@@ -244,7 +248,7 @@
     <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 경기 설정</h1>
     
     <label for="playerCount" style="font-size: 12px;">필드 인원 수</label>
-    <select id="playerCount" style="font-size: 12px; padding: 3px;">
+    <select id="playerCount" style="font-size: 12px; padding: 3px;" onchange="makeGridAll()">
         <option value="4">4명</option>
         <option value="5" selected>5명</option>
         <option value="6">6명</option>
@@ -255,7 +259,7 @@
     </select>
 
     <label for="totalPlayCount" style="font-size: 12px;">총 경기 수</label>
-    <select id="totalPlayCount" style="font-size: 12px; padding: 3px;">
+    <select id="totalPlayCount" style="font-size: 12px; padding: 3px;" onchange="makeGridAll()">
         <option value="4">4경기</option>
         <option value="5">5경기</option>
         <option value="6">6경기</option>
@@ -266,7 +270,7 @@
     </select>
 
     <div>
-        <input type="checkbox" id="checkGk"/>
+        <input type="checkbox" id="checkGk" onchange="makeGridAll()"/>
         <label class="label-inline" for="checkGk"><span class="pin">Goleiro(Goal keeper)</span></span></label>        
     </div>
 
