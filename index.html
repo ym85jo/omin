@@ -84,6 +84,7 @@
         }
         th,td {
             padding : 0.8rem;
+            text-align : center;
         }
     </style>
     <script>
@@ -202,7 +203,7 @@
             let tbodyLineupHtml = "";
             let playerCnt = 0;
             for (let i = 0; i < totalPlayCount; i++) {
-              tbodyLineupHtml += `<tr><td>${i+1}</td>`;
+              tbodyLineupHtml += `<tr><td>Match ${i+1}</td>`;
               members.forEach((member, index) => {
                 if(playArray[i].indexOf(index) > -1){
                   tbodyLineupHtml += `<td style="color : #205781">P</td>`;
