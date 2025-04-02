@@ -154,7 +154,7 @@
             let teamno = team.dataset.teamno;
             
             const trHead = document.getElementById("tr" + teamno);
-            let trHeadHtml = "<th></th>"
+            let trHeadHtml = "<td></td>"
             members.forEach((member, index) => {
               trHeadHtml += `<td>${member.dataset.name}</td>`;
             });
@@ -228,20 +228,20 @@
     <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 팀원 선정</h1>
     <div class="container-top">
         <div class="left-panel">
-            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">선수 명</h2>
+            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player</h2>
             <input type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></input>
-            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">후보 명단</h3>
+            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player List</h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
         </div>
         <div class="right-panel">
             <div id="team1" data-teamno="1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">팀 1</h3>
+                <h3 style="font-size: 16px; font-weight:bold;">Team 1</h3>
             </div>
             <div id="team2" data-teamno="2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">팀 2</h3>
+                <h3 style="font-size: 16px; font-weight:bold;">Team 2</h3>
             </div>
             <div id="team3" data-teamno="3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">팀 3</h3>
+                <h3 style="font-size: 16px; font-weight:bold;">Team 3</h3>
             </div>
         </div>
     </div>
@@ -282,7 +282,7 @@
     <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 출전 명단</h1>
     
     <div class="container" style="padding:0;">
-        <h3>팀 1</h3>
+        <h3>Team 1</h3>
         <table>
             <thead>
                 <tr id="tr1">
@@ -291,7 +291,7 @@
             <tbody id="tbody1"></tbody>
         </table>
 
-        <h3>팀 2</h3>
+        <h3>Team 2</h3>
         <table>
             <thead>
                 <tr id="tr2">
@@ -300,7 +300,7 @@
             <tbody id="tbody2"></tbody>
         </table>
 
-        <h3>팀 3</h3>
+        <h3>Team 3</h3>
         <table>
             <thead>
                 <tr id="tr3">
