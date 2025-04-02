@@ -202,12 +202,12 @@
               tbodyLineupHtml += `<tr><td>${i+1}</td>`;
               members.forEach((member, index) => {
                 if(playArray[i].indexOf(index) > -1){
-                  tbodyLineupHtml += `<td style="color : #426e93">P</td>`;
+                  tbodyLineupHtml += `<td style="color : #205781">P</td>`;
                 } else {
                   if(keeperPlayer[i] == index && isChecked){
-                      tbodyLineupHtml += `<td style="color:#8c61ff">K</td>`;
+                      tbodyLineupHtml += `<td style="color:#BF3131">K</td>`;
                   } else {
-                      tbodyLineupHtml += `<td style="color:#f59d30">R</td>`;    
+                      tbodyLineupHtml += `<td style="color:#7D0A0A">R</td>`;    
                   }
                   
                 }                
