@@ -189,6 +189,8 @@
                 
             }  
 
+            const isChecked = document.getElementById('checkGk').checked;
+                        
             const tbodyLineup = document.getElementById("tbody" + teamno);
             let tbodyLineupHtml = "";
             let playerCnt = 0;
@@ -196,12 +198,12 @@
               tbodyLineupHtml += `<tr><td>${i+1}</td>`;
               members.forEach((member, index) => {
                 if(playArray[i].indexOf(index) > -1){
-                  tbodyLineupHtml += `<td>P</td>`;
+                  tbodyLineupHtml += `<td style="color : #426e93">P</td>`;
                 } else {
-                  if(keeperPlayer[i] == index){
-                      tbodyLineupHtml += `<td style="color:#ee7762">K</td>`;
+                  if(keeperPlayer[i] == index && isChecked){
+                      tbodyLineupHtml += `<td style="color:#8c61ff">K</td>`;
                   } else {
-                      tbodyLineupHtml += `<td style="color:#d2691e">R</td>`;    
+                      tbodyLineupHtml += `<td style="color:#f59d30">R</td>`;    
                   }
                   
                 }                
