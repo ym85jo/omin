@@ -155,7 +155,8 @@
             
             var totalCnt = members.length;
             var playerCount = Number(document.getElementById('playerCount').value);
-            for(var i = 0; i < 10; i ++){
+            var totalPlayCount = Number(document.getElementById('totalPlayCount').value);
+            for(var i = 0; i < totalPlayCount; i ++){
               
               var playArrayTemp = [];
               var restArrayTemp = []
@@ -185,7 +186,7 @@
             const tbodyLineup = document.getElementById("tbody" + teamno);
             let tbodyLineupHtml = "";
             let playerCnt = 0;
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < totalPlayCount; i++) {
               tbodyLineupHtml += `<tr><td>${i+1}</td>`;
               members.forEach((member, index) => {
                 if(playArray[i].indexOf(index) > -1){
