@@ -95,6 +95,9 @@
             const names = namesInput.value.split("\n").map(name => name.trim()).filter(name => name !== "");
             const list = document.getElementById("unassigned");
             names.forEach(name => {
+
+                name = name.replace(/[^가-힛]/g, '');
+                
                 const item = document.createElement("div");
                 item.className = "draggable";
                 item.draggable = true;
@@ -230,7 +233,7 @@
     <div class="container-top">
         <div class="left-panel">
             <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player</h2>
-            <input type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></input>
+            <textarea type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
             <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player List</h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
         </div>
