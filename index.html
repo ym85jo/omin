@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>민영조</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         body {
             font-size: 14px;
@@ -90,20 +89,14 @@
         .delete-zone {
             background: #ffdddd;
             border: 2px dashed red;
-            text-align: center;
             color: red;
-            font-weight: bold;
             padding: 10px;
             min-height: 40px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            font-size: 14px;
+            margin-top : 4px;
         }
-        .delete-zone i {
-            font-size: 24px;
-            color: red;
-        }
+        
     </style>
     <script>
         let order = 0;
@@ -159,8 +152,9 @@
 
         function deleteDrop(event) {
             event.preventDefault();
-            const data = event.dataTransfer.getData('text');
-            document.getElementById(data).remove();
+            const order = event.dataTransfer.getData("text");
+            const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
+            draggedElements[0].remove();
         }
 
         function sortTeam(team) {
