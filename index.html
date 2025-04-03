@@ -96,14 +96,14 @@
             const list = document.getElementById("unassigned");
             names.forEach(name => {
 
-                // name = name.replace(/[^가-힛]/g, '');
+                name = name.replace(/[^가-힛a-zA-Z]/g, '');
                 
                 const item = document.createElement("div");
                 item.className = "draggable";
                 item.draggable = true;
                 item.innerText = name;
                 item.dataset.order = order++;
-                item.dataset.name = names;
+                item.dataset.name = name;
                 item.addEventListener("dragstart", dragStart);
                 list.appendChild(item);
             });
