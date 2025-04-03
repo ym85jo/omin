@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>민영조</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         body {
             font-size: 14px;
@@ -86,6 +87,23 @@
             padding : 0.8rem;
             text-align : center;
         }
+        .delete-zone {
+            background: #ffdddd;
+            border: 2px dashed red;
+            text-align: center;
+            color: red;
+            font-weight: bold;
+            padding: 10px;
+            min-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+        .delete-zone i {
+            font-size: 24px;
+            color: red;
+        }
     </style>
     <script>
         let order = 0;
@@ -137,6 +155,12 @@
                 }
             }
             makeGridAll();
+        }
+
+        function deleteDrop(event) {
+            event.preventDefault();
+            const data = event.dataTransfer.getData('text');
+            document.getElementById(data).remove();
         }
 
         function sortTeam(team) {
@@ -236,6 +260,11 @@
             <textarea type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
             <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player List</h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+
+            <div class="delete-zone" ondragover="allowDrop(event)" ondrop="deleteDrop(event)">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+            
         </div>
         <div class="right-panel">
             <div id="team1" data-teamno="1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
