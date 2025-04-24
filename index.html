@@ -109,6 +109,7 @@
             names.forEach(name => {
 
                 name = name.replace(/[^가-힛a-zA-Z]/g, '');
+                if(name == '') return;
                 
                 const item = document.createElement("div");
                 item.className = "draggable";
@@ -118,6 +119,7 @@
                 item.dataset.name = name;
                 item.addEventListener("dragstart", dragStart);
                 list.appendChild(item);
+
             });
             namesInput.value = "";
             updatePlayerCount();
