@@ -251,6 +251,14 @@
             document.getElementById("playerCountText").innerText = count;
         }
 
+        function toggleTeamColor(h3) {
+            const colors = ["", "#CCFF00", "#FF5F1F"]; // 파랑, 빨강, 초록
+            let index = parseInt(h3.dataset.colorIndex || "0");
+            index = (index + 1) % colors.length;
+            h3.dataset.colorIndex = index;
+            h3.style.background = colors[index];
+        }
+
 
     </script>
 </head>
@@ -322,7 +330,7 @@
     <div class="container" style="padding:0;">
 
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0;">Team 1</h3>
+            <h3 onclick="toggleTeamColor(this)" data-color-index="0" style="margin: 0;">Team 1</h3>
             <div>
                 <input type="checkbox" id="checkGk1" onchange="makeGridAll()" checked/>
                 <label class="label-inline" for="checkGk1"><span class="pin">Goleiro</span></span></label>  
