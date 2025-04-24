@@ -81,6 +81,7 @@
             font-size:16px;
             font-weight : bold;
             margin-bottom : 0;
+            padding-right: 20px;
         }
         th,td {
             padding : 0.8rem;
@@ -252,7 +253,7 @@
         }
 
         function toggleTeamColor(h3) {
-            const colors = ["", "#CCFF00", "#FF5F1F"]; // 파랑, 빨강, 초록
+            const colors = ["", "#CCFF00", "rgb(251 129 115)"]; // 파랑, 빨강, 초록
             let index = parseInt(h3.dataset.colorIndex || "0");
             index = (index + 1) % colors.length;
             h3.dataset.colorIndex = index;
