@@ -53,7 +53,7 @@
         }
         textarea {
             font-size: 12px;
-            height: 50px;
+            height: 130px;
         }
         button {
             font-size: 12px;
@@ -119,6 +119,7 @@
                 list.appendChild(item);
             });
             namesInput.value = "";
+            updatePlayerCount();
         }
 
         function handleKeyPress(event) {
@@ -148,6 +149,7 @@
                 }
             }
             makeGridAll();
+            updatePlayerCount();
         }
 
         function deleteDrop(event) {
@@ -155,6 +157,7 @@
             const order = event.dataTransfer.getData("text");
             const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
             draggedElements[0].remove();
+            updatePlayerCount();
         }
 
         function sortTeam(team) {
@@ -242,6 +245,13 @@
             tbodyLineup.innerHTML = tbodyLineupHtml;
            
         }
+
+        function updatePlayerCount() {
+            const count = document.querySelectorAll("#unassigned .draggable").length;
+            document.getElementById("playerCountText").innerText = count;
+        }
+
+
     </script>
 </head>
 <body>
@@ -252,7 +262,10 @@
         <div class="left-panel">
             <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player</h2>
             <textarea type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
-            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player List</h3>
+            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">
+                Player List
+                (<span id="playerCountText">0</span>명)
+            </h3>
             <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
 
             <div class="delete-zone" ondragover="allowDrop(event)" ondrop="deleteDrop(event)">
@@ -269,6 +282,9 @@
             </div>
             <div id="team3" data-teamno="3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3 style="font-size: 16px; font-weight:bold;">Team 3</h3>
+            </div>
+            <div id="team4" data-teamno="4" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3 style="font-size: 16px; font-weight:bold;">Team 4</h3>
             </div>
         </div>
     </div>
@@ -298,11 +314,6 @@
         <option value="9">9경기</option>
         <option value="10">10경기</option>
     </select>
-
-    <div>
-        <input type="checkbox" id="checkGk" onchange="makeGridAll()" checked/>
-        <label class="label-inline" for="checkGk"><span class="pin">Goleiro(Goal keeper)</span></span></label>        
-    </div>
 
     <hr/>
 
@@ -341,10 +352,6 @@
             <tbody id="tbody2"></tbody>
         </table>
 
-
-
-
-
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h3 style="margin: 0;">Team 3</h3>
             <div>
@@ -359,6 +366,25 @@
             </thead>
             <tbody id="tbody3"></tbody>
         </table>
+
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0;">Team 4</h3>
+            <div>
+                <input type="checkbox" id="checkGk4" onchange="makeGridAll()" checked/>
+                <label class="label-inline" for="checkGk4"><span class="pin">Goleiro</span></span></label>  
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr id="tr4">
+                </tr>    
+            </thead>
+            <tbody id="tbody4"></tbody>
+        </table>
+
+
+
     </div>
 </body>
 </html>
