@@ -88,9 +88,9 @@
             text-align : center;
         }
         .delete-zone {
-            background: #ffdddd;
-            border: 2px dashed red;
-            color: red;
+            background: #FFE5E5;  /* 연한 빨간색으로 변경 */
+            border: 2px dashed #FF6B6B;  /* 부드러운 빨간색으로 변경 */
+            color: #FF6B6B;  /* 부드러운 빨간색으로 변경 */
             padding: 10px;
             min-height: 40px;
             display: flex;
@@ -98,42 +98,103 @@
             margin-top : 4px;
         }
         
+        /* 토스트 메시지 스타일 */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .toast {
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
     </style>
     <script>
-        let order = 0;
+
+        let PAGE_ORDER = 0;
+
+        function makePlayer(name, order){
+            
+            if(PAGE_ORDER < order) PAGE_ORDER = order;
+
+            const item = document.createElement("div");
+            item.className = "draggable";
+            item.draggable = true;
+            item.innerText = name;
+            item.dataset.order = order;
+            item.dataset.name = name;
+            item.addEventListener("dragstart", dragStart);
+            item.addEventListener("dblclick", orderToLast);
+            return item;
+
+        }
+
+        function orderToLast(event){
+
+            const order = event.target.dataset.order;
+            event.target.dataset.order = ++PAGE_ORDER;
+            const targetTeam = event.target.closest(".team");
+            if (targetTeam) {
+                sortTeam(targetTeam);
+            }
+            showToast(`${event.target.dataset.name} 선수가 마지막으로 이동되었습니다.`);
+            saveState();
+        }
+
+        function showToast(message, duration = 3000) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            
+            // 토스트 표시
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // 토스트 제거
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, duration);
+        }
 
         function addNames() {
             const namesInput = document.getElementById("names");
             const names = namesInput.value.split("\n").map(name => name.trim()).filter(name => name !== "");
             const list = document.getElementById("unassigned");
+            let addedCount = 0;
+            
             names.forEach(name => {
-
                 name = name.replace(/[^가-힛a-zA-Z]/g, '');
                 if(name == '') return;
-                
-                const item = document.createElement("div");
-                item.className = "draggable";
-                item.draggable = true;
-                item.innerText = name;
-                item.dataset.order = order++;
-                item.dataset.name = name;
-                item.addEventListener("dragstart", dragStart);
-                item.addEventListener("dblclick", dubbleClickOrderUp);
+                const item = makePlayer(name, ++PAGE_ORDER);
                 list.appendChild(item);
-
+                addedCount++;
             });
+            
             namesInput.value = "";
             updatePlayerCount();
-        }
-
-        function dubbleClickOrderUp(event){
-            event.target.dataset.order = order++;
-            const targetTeam = event.target.closest(".team");
-            if (targetTeam) {
-                sortTeam(targetTeam);
+            
+            if (addedCount > 0) {
+                showToast(`${addedCount}명의 선수가 추가되었습니다.`);
             }
-            makeGridAll();
-
         }
 
         function handleKeyPress(event) {
@@ -162,6 +223,7 @@
                     sortTeam(targetTeam);
                 }
             }
+            
             makeGridAll();
             updatePlayerCount();
         }
@@ -170,7 +232,11 @@
             event.preventDefault();
             const order = event.dataTransfer.getData("text");
             const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
+            const playerName = draggedElements[0].dataset.name;
             draggedElements[0].remove();
+            showToast(`${playerName} 선수가 제거되었습니다.`);
+            
+            makeGridAll();
             updatePlayerCount();
         }
 
@@ -185,6 +251,7 @@
             teams.forEach(function(team){
               makeGrid(team);  
             });
+            saveState()
         }
         
         function makeGrid(team){
@@ -271,15 +338,74 @@
             index = (index + 1) % colors.length;
             h3.dataset.colorIndex = index;
             h3.style.background = colors[index];
+            showToast(`${h3.innerText} 팀 색상이 변경되었습니다.`);
         }
 
+        // 현재 상태를 로컬 스토리지에 저장
+        function saveState() {
+            const state = {
+                unassigned: Array.from(document.getElementById("unassigned").children)
+                    .filter(child => child.classList.contains("draggable"))
+                    .map(child => ({name : child.dataset.name, order : child.dataset.order})),
+                teams: Array.from(document.querySelectorAll('.right-panel .team div.draggable'))
+                    .map(child => ({team:child.closest('.team').id, name : child.dataset.name, order : child.dataset.order})),
+            };
+            localStorage.setItem('teamState', JSON.stringify(state));
+        }
+
+        function clearAll(){
+            localStorage.removeItem('teamState');
+            location.reload();
+        }
+        
+        function loadState() {
+            
+            const savedTeamState = localStorage.getItem('teamState');
+            if (savedTeamState) {
+                
+                teamState = JSON.parse(savedTeamState);
+                
+                // 팀원 데이터 로드
+                if(teamState.unassigned && teamState.unassigned.length > 0){
+                    teamState.unassigned.forEach(o => {
+                        const item = makePlayer(o.name, Number(o.order));
+                        document.getElementById("unassigned").appendChild(item);
+                    });
+                }
+
+                // 팀 데이터 로드
+                if(teamState.teams && teamState.teams.length > 0){
+                    teamState.teams.forEach(o => {
+                        const item = makePlayer(o.name, Number(o.order));
+                        document.getElementById(o.team).appendChild(item);
+                    });
+                    makeGridAll();
+                    updatePlayerCount();
+                }
+            }
+            
+        }
+
+        function init(){
+            loadState();
+        }
+
+        window.onload = function() {
+            init();
+        };
 
     </script>
 </head>
 <body>
+    <div class="toast-container"></div>
     <div class="title">KickOff</div>
     <hr/>
-    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 팀원 선정</h1>
+    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto; display: flex; justify-content: space-between; align-items: center;">
+        # 팀원 선정
+        <div>
+            <button class="button" style="margin-right: 10px; padding : 0 1rem;" onclick='clearAll()'> Clear</button>
+        </div>
+    </h1>
     <div class="container-top">
         <div class="left-panel">
             <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player</h2>
