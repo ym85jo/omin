@@ -118,11 +118,22 @@
                 item.dataset.order = order++;
                 item.dataset.name = name;
                 item.addEventListener("dragstart", dragStart);
+                item.addEventListener("dblclick", dubbleClickOrderUp);
                 list.appendChild(item);
 
             });
             namesInput.value = "";
             updatePlayerCount();
+        }
+
+        function dubbleClickOrderUp(event){
+            event.target.dataset.order = order++;
+            const targetTeam = event.target.closest(".team");
+            if (targetTeam) {
+                sortTeam(targetTeam);
+            }
+            makeGridAll();
+
         }
 
         function handleKeyPress(event) {
