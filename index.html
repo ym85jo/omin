@@ -3,609 +3,754 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>https://yeongmin.vercel.app</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <title>운동 시작 하기 전</title>
     <style>
+        :root {
+            --primary-color: #4a5568;
+            --secondary-color: #f7fafc;
+            --border-color: #e2e8f0;
+            --text-color: #2d3748;
+        }
+
         body {
-            font-size: 14px;
-            background-color: #f8f9fa;
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-        }
-        .header {
-            background: #ffffff;
-            color: #1d1d1f;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .header::before {
-            display: none;
-        }
-        .header-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 1;
+            padding: 40px 20px;
+            background-color: #f9fafb;
+            color: var(--text-color);
+            line-height: 1.6;
         }
-        .title {
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
             font-size: 2.5rem;
-            font-weight: 600;
-            margin: 0;
-            letter-spacing: -0.5px;
-            color: #1d1d1f;
+            font-weight: 700;
         }
-        .clear-button {
-            background-color: #0071e3;
-            border: none;
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 980px;
+
+        h2 {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .input-section, .output-section {
+            flex: 1;
+        }
+
+        textarea {
+            width: 95%;
+            height: 200px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
             font-size: 1rem;
-            font-weight: 400;
-            transition: all 0.3s ease;
+            resize: vertical;
+            transition: border-color 0.2s;
         }
-        .clear-button:hover {
-            background-color: #0077ED;
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
+            flex: 1;
+        }
+
+        .secondary-button {
+            background-color: #718096;
+            color: white;
+            flex: 1;
+        }
+
+        .danger-button {
+            background-color: #dc2626;
+            color: white;
+            flex: 1;
+        }
+
+        button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .primary-button:hover {
+            background-color: #2c5282;
+        }
+
+        .secondary-button:hover {
+            background-color: #4a5568;
+        }
+
+        .danger-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .team, .unassigned-players {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            min-height: 100px;
+            background-color: white;
+            transition: all 0.2s;
+        }
+
+        .team.drag-over {
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+        }
+
+        .player {
+            padding: 10px 16px;
+            margin: 5px;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: move;
+            display: inline-block;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .player:hover {
+            background-color: #edf2f7;
             transform: translateY(-1px);
         }
-        div.title{
-            text-align : center;
-            font-size : 26px;
-            margin-top : 16px;
-            font-weight : bold;
+
+        .player.dragging {
+            opacity: 0.5;
+            background-color: var(--primary-color);
+            color: white;
         }
-        .container-top {
+
+        h3 {
+            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .team-list {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 20px;
+            min-width: 0;
         }
-        .left-panel {
-            width: 40%;
+
+        .team {
+            flex: 1;
+            min-width: 200px;
         }
-        .right-panel {
-            width: 55%;
+
+        .unassigned-players {
+            width: auto;
+            margin-bottom: 30px;
+            min-height: 100px;
+            transition: all 0.2s;
+            overflow-x: auto;
+        }
+
+        .unassigned-players.drag-over {
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+        }
+
+        .add-player-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .add-player-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .add-player-form input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .output-section {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            min-width: 0;
         }
-        .team {
-            min-height: 80px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            font-size: 12px;
-            flex-wrap:wrap;
-        }
-        .draggable {
-            padding: 5px;
-            margin: 5px;
-            background: #007bff;
-            color: white;
-            cursor: grab;
-            text-align: center;
-            font-size: 12px;
-        }
-        textarea {
-            font-size: 12px;
-            height: 130px;
-        }
-        button {
-            font-size: 12px;
-            padding: 5px 10px;
-        }
-        @media (max-width: 768px) {
-            .container-top {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-            .left-panel, .right-panel {
-                width: 50%;
-            }
-            .right-panel {
-                display: flex;
-                flex-direction: column;
-            }
-        }
-        .team>h3{
-            width : 100%;
-            margin-bottom:3px;
-        }
-        .container h3{
-            font-size:16px;
-            font-weight : bold;
-            margin-bottom : 0;
-            padding-right: 20px;
-        }
-        th,td {
-            padding : 0.8rem;
-            text-align : center;
-        }
-        .delete-zone {
-            background: #FFE5E5;  /* 연한 빨간색으로 변경 */
-            border: 2px dashed #FF6B6B;  /* 부드러운 빨간색으로 변경 */
-            color: #FF6B6B;  /* 부드러운 빨간색으로 변경 */
-            padding: 10px;
-            min-height: 40px;
-            display: flex;
-            justify-content: center;
-            margin-top : 4px;
-        }
-        
-        /* 토스트 메시지 스타일 */
-        .toast-container {
+
+        /* 모달 스타일 추가 */
+        .modal {
+            display: none;
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
         }
-        
-        .toast {
-            background-color: #333;
+
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 680px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .close-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            table-layout: fixed;
+        }
+
+        .result-table th, .result-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: center;
+            width: calc(100% / var(--team-count, 4));
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .result-table th {
+            background-color: #949aa7;
             color: white;
-            padding: 12px 24px;
-            border-radius: 4px;
-            margin-top: 10px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-weight: bold;
         }
-        
-        .toast.show {
-            opacity: 1;
+
+        .result-table th.yellow-team {
+            background-color: #f6e05e;
+            color: #2d3748;
         }
-        
+
+        .result-table th.orange-team {
+            background-color: #ed8936;
+            color: white;
+        }
+
+        .result-table tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+
+        .result-table tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .result-table td {
+            color: #333333;
+        }
+
+        h3.jokki-yellow{
+            background-color: #f6e05e;
+        }
+        h3.jokki-orange{
+            background-color: #ed8936;
+        }
+
+        #teamList > div > h3 {
+            cursor: pointer;
+            padding-left: 10px;
+        }
+
+        /* 사용법 모달 스타일 */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .help-modal-content {
+            position: relative;
+            background-color: white;
+            margin: 50px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .help-close-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .help-content {
+            line-height: 1.8;
+        }
+
+        .help-content h3 {
+            color: var(--primary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .help-content ul {
+            padding-left: 20px;
+        }
+
+        .help-content li {
+            margin-bottom: 8px;
+        }
+
+        /* 사용법 버튼 스타일 추가 */
+        .help-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .help-button:hover {
+            transform: scale(1.1);
+            background-color: #2c5282;
+        }
+
+        /* 푸터 스타일 */
         footer {
             text-align: center;
-            padding: 2rem 0;
-            font-size: 12px;
-            color: #86868b;
-            background: #ffffff;
-            margin-top: 4rem;
-            border-top: 1px solid #d2d2d7;
+            padding: 20px;
+            margin-top: 40px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
         }
-        footer a {
-            color: #0071e3;
-            text-decoration: none;
-            font-weight: 400;
-            transition: color 0.3s ease;
-        }
-        footer a:hover {
-            color: #0077ED;
+
+        footer p {
+            margin: 5px 0;
         }
     </style>
-    <script>
-
-        let PAGE_ORDER = 0;
-
-        function makePlayer(name, order){
-            
-            if(PAGE_ORDER < order) PAGE_ORDER = order;
-
-            const item = document.createElement("div");
-            item.className = "draggable";
-            item.draggable = true;
-            item.innerText = name;
-            item.dataset.order = order;
-            item.dataset.name = name;
-            item.addEventListener("dragstart", dragStart);
-            item.addEventListener("dblclick", orderToLast);
-            return item;
-
-        }
-
-        function orderToLast(event){
-
-            const order = event.target.dataset.order;
-            event.target.dataset.order = ++PAGE_ORDER;
-            const targetTeam = event.target.closest(".team");
-            if (targetTeam) {
-                sortTeam(targetTeam);
-            }
-            showToast(`${event.target.dataset.name} 선수가 마지막으로 이동되었습니다.`);
-            makeGridAll();
-        }
-
-        function showToast(message, duration = 3000) {
-            const toastContainer = document.querySelector('.toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            toastContainer.appendChild(toast);
-            
-            // 토스트 표시
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 100);
-            
-            // 토스트 제거
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, duration);
-        }
-
-        function addNames() {
-            const namesInput = document.getElementById("names");
-            const names = namesInput.value.split("\n").map(name => name.trim()).filter(name => name !== "");
-            const list = document.getElementById("unassigned");
-            let addedCount = 0;
-            
-            names.forEach(name => {
-                name = name.replace(/[^가-힛a-zA-Z]/g, '');
-                if(name == '') return;
-                const item = makePlayer(name, ++PAGE_ORDER);
-                list.appendChild(item);
-                addedCount++;
-            });
-            
-            namesInput.value = "";
-            updatePlayerCount();
-            
-            if (addedCount > 0) {
-                showToast(`${addedCount}명의 선수가 추가되었습니다.`);
-            }
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                addNames();
-            }
-        }
-
-        function dragStart(event) {
-            event.dataTransfer.setData("text", event.target.dataset.order);
-        }
-
-        function allowDrop(event) {
-            event.preventDefault();
-        }
-
-        function drop(event) {
-            event.preventDefault();
-            const order = event.dataTransfer.getData("text");
-            const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
-            if (draggedElements.length > 0) {
-                const targetTeam = event.target.closest(".team");
-                if (targetTeam) {
-                    targetTeam.appendChild(draggedElements[0]);
-                    sortTeam(targetTeam);
-                    showToast(`${draggedElements[0].dataset.name} 선수가 Team ${targetTeam.dataset.teamno} 에 추가되었습니다.`);
-                }
-            }
-            
-            makeGridAll();
-            updatePlayerCount();
-        }
-
-        function deleteDrop(event) {
-            event.preventDefault();
-            const order = event.dataTransfer.getData("text");
-            const draggedElements = document.querySelectorAll(`.draggable[data-order="${order}"]`);
-            const playerName = draggedElements[0].dataset.name;
-            draggedElements[0].remove();
-            showToast(`${playerName} 선수가 제거되었습니다.`);
-            
-            makeGridAll();
-            updatePlayerCount();
-        }
-
-        function sortTeam(team) {
-            const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
-            members.sort((a, b) => parseInt(a.dataset.order) - parseInt(b.dataset.order));
-            members.forEach(member => team.appendChild(member));
-        }
-
-        function makeGridAll(){
-            const teams = document.querySelectorAll('.right-panel .team');
-            teams.forEach(function(team){
-              makeGrid(team);  
-            });
-            saveState()
-        }
-        
-        function makeGrid(team){
-
-            const members = Array.from(team.children).filter(child => child.classList.contains("draggable"));
-            let teamno = team.dataset.teamno;
-            
-            const trHead = document.getElementById("tr" + teamno);
-            let trHeadHtml = "<td></td>"
-            members.forEach((member, index) => {
-              trHeadHtml += `<td>${member.dataset.name}</td>`;
-            });
-            trHead.innerHTML = trHeadHtml;
-
-            var playArray = [];
-            var restArray = [];
-
-            var keeperCount = new Array(members.length).fill(0);
-            var keeperPlayer = new Array(members.length).fill(-1);
-            
-            var totalCnt = members.length;
-            var playerCount = Number(document.getElementById('playerCount').value);
-            var totalPlayCount = Number(document.getElementById('totalPlayCount').value);
-            for(var i = 0; i < totalPlayCount; i ++){
-              
-              var playArrayTemp = [];
-              var restArrayTemp = []
-                
-              for(var k = 0; k < playerCount; k++){
-                playArrayTemp.push((i*playerCount + k) % totalCnt)
-              }
-
-              for(var k = playerCount; k < totalCnt; k++){
-                restArrayTemp.push((i*playerCount + k) % totalCnt)
-              }
-
-              let keeperIndex = -1;
-              restArrayTemp.forEach(function(r){
-                if(keeperIndex == -1) keeperIndex = r;
-                if(keeperCount[keeperIndex] > keeperCount[r]) keeperIndex = r;
-              })
-
-              keeperCount[keeperIndex] = keeperCount[keeperIndex] + 1;
-              keeperPlayer[i] = keeperIndex;
-                
-              playArray.push(playArrayTemp);
-              restArray.push(restArrayTemp);
-                
-            }  
-
-            const isChecked = document.getElementById('checkGk' + teamno).checked;
-                        
-            const tbodyLineup = document.getElementById("tbody" + teamno);
-            let tbodyLineupHtml = "";
-            let playerCnt = 0;
-            for (let i = 0; i < totalPlayCount; i++) {
-              tbodyLineupHtml += `<tr><td>${i+1}경기</td>`;
-              members.forEach((member, index) => {
-                if(playArray[i].indexOf(index) > -1){
-                  tbodyLineupHtml += `<td style="color : #205781">P</td>`;
-                } else {
-                  if(keeperPlayer[i] == index && isChecked){
-                      tbodyLineupHtml += `<td style="color:#BF3131">K</td>`;
-                  } else {
-                      tbodyLineupHtml += `<td style="color:#7D0A0A">R</td>`;    
-                  }
-                  
-                }                
-              });  
-              tbodyLineupHtml += `</tr>`
-            }
-            tbodyLineup.innerHTML = tbodyLineupHtml;
-           
-        }
-
-        function updatePlayerCount() {
-            const count = document.querySelectorAll("#unassigned .draggable").length;
-            document.getElementById("playerCountText").innerText = count;
-        }
-
-        function toggleTeamColor(h3) {
-            const colors = ["", "#CCFF00", "rgb(251 129 115)"]; // 파랑, 빨강, 초록
-            let index = parseInt(h3.dataset.colorIndex || "0");
-            index = (index + 1) % colors.length;
-            h3.dataset.colorIndex = index;
-            h3.style.background = colors[index];
-            showToast(`${h3.innerText} 팀 색상이 변경되었습니다.`);
-        }
-
-        // 현재 상태를 로컬 스토리지에 저장
-        function saveState() {
-            const state = {
-                unassigned: Array.from(document.getElementById("unassigned").children)
-                    .filter(child => child.classList.contains("draggable"))
-                    .map(child => ({name : child.dataset.name, order : child.dataset.order})),
-                teams: Array.from(document.querySelectorAll('.right-panel .team div.draggable'))
-                    .map(child => ({team:child.closest('.team').id, name : child.dataset.name, order : child.dataset.order})),
-            };
-            localStorage.setItem('teamState', JSON.stringify(state));
-        }
-
-        function clearAll(){
-            localStorage.removeItem('teamState');
-            location.reload();
-        }
-        
-        function loadState() {
-            
-            const savedTeamState = localStorage.getItem('teamState');
-            if (savedTeamState) {
-                
-                teamState = JSON.parse(savedTeamState);
-                
-                // 팀원 데이터 로드
-                if(teamState.unassigned && teamState.unassigned.length > 0){
-                    teamState.unassigned.forEach(o => {
-                        const item = makePlayer(o.name, Number(o.order));
-                        document.getElementById("unassigned").appendChild(item);
-                    });
-                }
-
-                // 팀 데이터 로드
-                if(teamState.teams && teamState.teams.length > 0){
-                    teamState.teams.forEach(o => {
-                        const item = makePlayer(o.name, Number(o.order));
-                        document.getElementById(o.team).appendChild(item);
-                    });
-                    makeGridAll();
-                    updatePlayerCount();
-                }
-            }
-            
-        }
-
-        function init(){
-            loadState();
-        }
-
-        window.onload = function() {
-            init();
-        };
-
-    </script>
 </head>
 <body>
-    <div class="toast-container"></div>
-    <div class="header">
-        <div class="header-content">
-            <h1 class="title">KickOff</h1>
+    <button class="help-button" onclick="showHelp()">?</button>
+    <h1>운동 시작 하기 전</h1>
+    <div class="container">
+        <div class="input-section">
+            <h2>선수 명단 입력</h2>
+            <p>참가할 선수들의 이름을 한 줄에 한 명씩 입력해주세요:</p>
+            <textarea id="playerList" placeholder="홍길동&#10;김철수&#10;이영희&#10;..."></textarea>
+            <div class="button-group">
+                <button class="primary-button" onclick="addInitialPlayers()">선수 추가</button>
+                <button class="secondary-button" onclick="showResults()">결과</button>
+                <button class="danger-button" onclick="clearAllData()">초기화</button>
+            </div>
+        </div>
+        <div class="output-section">
+            <h2>TEAM</h2>
+            <div class="unassigned-players" id="unassignedPlayers">
+                <h3>대기자 명단</h3>
+            </div>
+            <div class="team-list" id="teamList"></div>
         </div>
     </div>
-    <hr/>
-    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto; display: flex; justify-content: space-between; align-items: center;">
-        # 팀원 선정
-        <div>
-            <button class="button" style="margin-right: 10px; padding : 0 1rem;" onclick='clearAll()'> Clear</button>
-        </div>
-    </h1>
-    <div class="container-top">
-        <div class="left-panel">
-            <h2 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">Player</h2>
-            <textarea type="search" id="names" rows="3" onkeypress="handleKeyPress(event)"></textarea>
-            <h3 style="font-size: 16px; margin-bottom: 5px; font-weight:bold;">
-                Player List
-                (<span id="playerCountText">0</span>명)
-            </h3>
-            <div id="unassigned" class="team" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
 
-            <div class="delete-zone" ondragover="allowDrop(event)" ondrop="deleteDrop(event)">
-                REMOVE
+    <!-- 모달 창 추가 -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2 style="margin-bottom: 0;">오늘의 팀</h2>
+            <div id="currentDate" style="text-align: right; margin-bottom: 0; color: #666;"></div>
+            <table class="result-table" id="resultTable">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 사용법 모달 창 추가 -->
+    <div id="helpModal" class="help-modal">
+        <div class="help-modal-content">
+            <span class="help-close-button" onclick="closeHelpModal()">&times;</span>
+            <h2>운동 시작 하기 전</h2>
+            <div class="help-content">
+                <h3>1. 선수 추가하기</h3>
+                <ul>
+                    <li>왼쪽 텍스트 영역에 참가할 선수들의 이름을 한 줄에 한 명씩 입력합니다.</li>
+                    <li>'선수 추가' 버튼을 클릭하면 입력한 선수들이 미배정 선수 목록에 추가됩니다.</li>
+                    <li>이미 추가된 선수는 중복으로 추가되지 않습니다.</li>
+                </ul>
+
+                <h3>2. 팀 배정하기</h3>
+                <ul>
+                    <li>미배정 선수 목록에서 선수를 드래그하여 원하는 팀으로 이동시킵니다.</li>
+                    <li>팀 간에도 선수를 드래그하여 자유롭게 이동할 수 있습니다.</li>
+                    <li>각 팀은 최대 4개까지 생성되며, 각 팀의 선수 수는 제한이 없습니다.</li>
+                    <li>선수를 다시 미배정 목록으로 이동시키려면 '대기자 명단'으로 드래그하세요.</li>
+                </ul>
+
+                <h3>3. 팀 조끼 색상 설정</h3>
+                <ul>
+                    <li>팀 제목을 클릭하여 조끼 색상을 변경할 수 있습니다.</li>
+                    <li>클릭 순서: 기본 → 노란색(조끼) → 주황색(조끼) → 기본</li>
+                    <li>설정된 조끼 색상은 결과 보기에 자동으로 반영됩니다.</li>
+                    <li>각 팀의 조끼 색상은 독립적으로 설정 가능합니다.</li>
+                </ul>
+
+                <h3>4. 팀 배정 결과 보기</h3>
+                <ul>
+                    <li>'결과' 버튼을 클릭하면 현재 팀 배정 상태를 테이블로 확인할 수 있습니다.</li>
+                    <li>각 팀의 선수들이 정렬되어 표시되며, 설정된 조끼 색상이 반영됩니다.</li>
+                    <li>모달 창 외부를 클릭하거나 X 버튼을 클릭하여 결과 창을 닫을 수 있습니다.</li>
+                    <li>결과는 실시간으로 업데이트되며, 팀 배정이 변경될 때마다 새로운 결과를 확인할 수 있습니다.</li>
+                </ul>
+
+                <h3>5. 데이터 관리</h3>
+                <ul>
+                    <li>모든 변경사항은 자동으로 저장되어 페이지를 새로고침해도 유지됩니다.</li>
+                    <li>'초기화' 버튼을 클릭하면 모든 팀 배정과 선수 데이터가 삭제됩니다.</li>
+                    <li>초기화 전에 확인 메시지가 표시되며, 실수로 초기화하는 것을 방지합니다.</li>
+                    <li>브라우저의 로컬 스토리지를 사용하여 데이터를 저장하므로, 브라우저 캐시를 삭제하면 데이터가 초기화됩니다.</li>
+                </ul>
+
+                <h3>6. 팁</h3>
+                <ul>
+                    <li>팀 배정 시 드래그 앤 드롭이 잘 작동하지 않는다면, 브라우저를 새로고침해보세요.</li>
+                    <li>모바일 기기에서는 터치 드래그를 지원하지 않을 수 있습니다.</li>
+                    <li>최신 버전의 Chrome, Firefox, Safari, Edge 브라우저에서 최적의 성능을 보장합니다.</li>
+                </ul>
             </div>
+        </div>
+    </div>
+
+    <script>
+        function addInitialPlayers() {
+            const playerListInput = document.getElementById('playerList');
+            const playerList = playerListInput.value;
+            const players = playerList.split('\n').filter(player => player.trim() !== '');
             
-        </div>
-        <div class="right-panel">
-            <div id="team1" data-teamno="1" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">Team 1</h3>
-            </div>
-            <div id="team2" data-teamno="2" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">Team 2</h3>
-            </div>
-            <div id="team3" data-teamno="3" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">Team 3</h3>
-            </div>
-            <div id="team4" data-teamno="4" class="team" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3 style="font-size: 16px; font-weight:bold;">Team 4</h3>
-            </div>
-        </div>
-    </div>
+            players.forEach(player => {
+                addPlayerToUnassigned(player);
+            });
+            
+            // 입력창 비우기
+            playerListInput.value = '';
+        }
 
-    <hr/>
+        function addPlayerToUnassigned(playerName) {
+            const unassignedPlayers = document.getElementById('unassignedPlayers');
+            const playerDiv = document.createElement('div');
+            playerDiv.className = 'player';
+            playerDiv.draggable = true;
+            playerDiv.textContent = playerName;
+            playerDiv.addEventListener('dragstart', handleDragStart);
+            playerDiv.addEventListener('dragend', handleDragEnd);
+            unassignedPlayers.appendChild(playerDiv);
+            saveToLocalStorage();
+        }
 
-    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 경기 설정</h1>
-    
-    <label for="playerCount" style="font-size: 12px;">필드 인원 수</label>
-    <select id="playerCount" style="font-size: 12px; padding: 3px;" onchange="makeGridAll()">
-        <option value="4">4명</option>
-        <option value="5" selected>5명</option>
-        <option value="6">6명</option>
-        <option value="7">7명</option>
-        <option value="8">8명</option>
-        <option value="9">9명</option>
-        <option value="10">10명</option>
-    </select>
+        // 페이지 로드 시 팀 목록 초기화
+        window.onload = function() {
+            const teamList = document.getElementById('teamList');
+            const unassignedPlayers = document.getElementById('unassignedPlayers');
+            
+            // 미배정 선수 영역에 드래그 앤 드롭 이벤트 추가
+            unassignedPlayers.addEventListener('dragover', handleDragOver);
+            unassignedPlayers.addEventListener('dragleave', handleDragLeave);
+            unassignedPlayers.addEventListener('drop', handleDrop);
+            
+            teamList.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team';
+                teamDiv.innerHTML = `<h3 onclick="clickTeam(this)">Team ${i + 1}</h3>`;
+                teamDiv.addEventListener('dragover', handleDragOver);
+                teamDiv.addEventListener('dragleave', handleDragLeave);
+                teamDiv.addEventListener('drop', handleDrop);
+                teamList.appendChild(teamDiv);
+            }
 
-    <label for="totalPlayCount" style="font-size: 12px;">총 경기 수</label>
-    <select id="totalPlayCount" style="font-size: 12px; padding: 3px;" onchange="makeGridAll()">
-        <option value="4">4경기</option>
-        <option value="5">5경기</option>
-        <option value="6">6경기</option>
-        <option value="7">7경기</option>
-        <option value="8" selected>8경기</option>
-        <option value="9">9경기</option>
-        <option value="10">10경기</option>
-    </select>
+            // 저장된 데이터 불러오기
+            loadFromLocalStorage();
+        }
 
-    <hr/>
+        function saveToLocalStorage() {
+            const teams = document.querySelectorAll('.team');
+            const unassignedPlayers = document.getElementById('unassignedPlayers');
+            
+            const data = {
+                teams: Array.from(teams).map(team => ({
+                    players: Array.from(team.querySelectorAll('.player')).map(p => p.textContent),
+                    isJokki: team.querySelector('h3').classList.contains('jokki-yellow') ? 'jokki-yellow' : 
+                            team.querySelector('h3').classList.contains('jokki-orange') ? 'jokki-orange' : ''
+                })),
+                unassigned: Array.from(unassignedPlayers.querySelectorAll('.player')).map(p => p.textContent)
+            };
+            
+            localStorage.setItem('teamData', JSON.stringify(data));
+        }
 
-    <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto;"># 출전 명단</h1>
-    
-    <div class="container" style="padding:0;">
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('teamData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // 미배정 선수 복원
+                const unassignedPlayers = document.getElementById('unassignedPlayers');
+                // 기존 선수들 제거
+                const existingPlayers = unassignedPlayers.querySelectorAll('.player');
+                existingPlayers.forEach(player => player.remove());
+                
+                // 새로운 선수들 추가
+                data.unassigned.forEach(player => {
+                    const playerDiv = document.createElement('div');
+                    playerDiv.className = 'player';
+                    playerDiv.draggable = true;
+                    playerDiv.textContent = player;
+                    playerDiv.addEventListener('dragstart', handleDragStart);
+                    playerDiv.addEventListener('dragend', handleDragEnd);
+                    unassignedPlayers.appendChild(playerDiv);
+                });
+                
+                // 팀 선수 복원
+                const teams = document.querySelectorAll('.team');
+                data.teams.forEach((teamData, index) => {
+                    const team = teams[index];
+                    const teamHeader = team.querySelector('h3');
+                    
+                    // 팀 상태 복원
+                    if (teamData.isJokki === 'jokki-yellow') {
+                        teamHeader.classList.add('jokki-yellow');
+                    } else if (teamData.isJokki === 'jokki-orange') {
+                        teamHeader.classList.add('jokki-orange');
+                    }
+                    
+                    // 기존 선수들 제거
+                    const existingTeamPlayers = team.querySelectorAll('.player');
+                    existingTeamPlayers.forEach(player => player.remove());
+                    
+                    // 새로운 선수들 추가
+                    teamData.players.forEach(player => {
+                        const playerDiv = document.createElement('div');
+                        playerDiv.className = 'player';
+                        playerDiv.draggable = true;
+                        playerDiv.textContent = player;
+                        playerDiv.addEventListener('dragstart', handleDragStart);
+                        playerDiv.addEventListener('dragend', handleDragEnd);
+                        team.appendChild(playerDiv);
+                    });
+                });
+            }
+        }
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 onclick="toggleTeamColor(this)" data-color-index="0" style="margin: 0;">Team 1</h3>
-            <div>
-                <input type="checkbox" id="checkGk1" onchange="makeGridAll()" checked/>
-                <label class="label-inline" for="checkGk1"><span class="pin">Goleiro</span></span></label>  
-            </div>
-        </div>
-        <table>
-            <thead>
-                <tr id="tr1">
-                </tr>    
-            </thead>
-            <tbody id="tbody1"></tbody>
-        </table>
+        function clearAllData() {
+            if (confirm('모든 데이터를 초기화하시겠습니까?')) {
+                localStorage.removeItem('teamData');
+                location.reload();
+            }
+        }
 
+        function handleDragStart(e) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', e.target.textContent);
+        }
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 onclick="toggleTeamColor(this)" data-color-index="0" style="margin: 0;">Team 2</h3>
-            <div>
-                <input type="checkbox" id="checkGk2" onchange="makeGridAll()" checked/>
-                <label class="label-inline" for="checkGk2"><span class="pin">Goleiro</span></span></label>  
-            </div>
-        </div>
-        <table>
-            <thead>
-                <tr id="tr2">
-                </tr>    
-            </thead>
-            <tbody id="tbody2"></tbody>
-        </table>
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 onclick="toggleTeamColor(this)" data-color-index="0" style="margin: 0;">Team 3</h3>
-            <div>
-                <input type="checkbox" id="checkGk3" onchange="makeGridAll()" checked/>
-                <label class="label-inline" for="checkGk3"><span class="pin">Goleiro</span></span></label>  
-            </div>
-        </div>
-        <table>
-            <thead>
-                <tr id="tr3">
-                </tr>    
-            </thead>
-            <tbody id="tbody3"></tbody>
-        </table>
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
 
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 onclick="toggleTeamColor(this)" data-color-index="0" style="margin: 0;">Team 4</h3>
-            <div>
-                <input type="checkbox" id="checkGk4" onchange="makeGridAll()" checked/>
-                <label class="label-inline" for="checkGk4"><span class="pin">Goleiro</span></span></label>  
-            </div>
-        </div>
-        <table>
-            <thead>
-                <tr id="tr4">
-                </tr>    
-            </thead>
-            <tbody id="tbody4"></tbody>
-        </table>
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const playerName = e.dataTransfer.getData('text/plain');
+            const playerElement = document.querySelector('.player.dragging');
+            
+            if (playerElement) {
+                e.currentTarget.appendChild(playerElement);
+                saveToLocalStorage();
+            }
+        }
 
+        function showResults() {
+            const modal = document.getElementById('resultModal');
+            const tableBody = document.querySelector('#resultTable tbody');
+            const currentDate = document.getElementById('currentDate');
+            
+            // 오늘 날짜 포맷팅
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            currentDate.textContent = `${year}.${month}.${day}`;
+            
+            tableBody.innerHTML = '';
 
-        <hr/>
+            // 각 팀의 선수 수집
+            const teams = document.querySelectorAll('.team');
+            const teamPlayers = Array.from(teams).map(team => 
+                Array.from(team.querySelectorAll('.player')).map(p => p.textContent)
+            );
 
-        <footer>
-            © 2025 Created by <a href="https://open.kakao.com/o/s0U8JTsh" target="_blank" style="color: inherit;">yeongmin.</a>
-        </footer>
+            // 선수가 있는 팀만 필터링
+            const nonEmptyTeams = teamPlayers.filter(players => players.length > 0);
+            
+            if (nonEmptyTeams.length === 0) {
+                alert('배정된 선수가 없습니다.');
+                return;
+            }
 
+            // 테이블 헤더 생성
+            const headerRow = document.createElement('tr');
+            nonEmptyTeams.forEach((_, index) => {
+                const th = document.createElement('th');
+                const teamElement = document.querySelector(`.team:nth-child(${index + 1}) h3`);
+                let teamName = `Team ${index + 1}`;
+                if (teamElement.classList.contains('jokki-yellow')) {
+                    th.classList.add('yellow-team');
+                } else if (teamElement.classList.contains('jokki-orange')) {
+                    th.classList.add('orange-team');
+                }
+                th.textContent = teamName;
+                headerRow.appendChild(th);
+            });
+            tableBody.appendChild(headerRow);
 
-    </div>
+            // 가장 많은 선수를 가진 팀의 길이 찾기
+            const maxPlayers = Math.max(...nonEmptyTeams.map(players => players.length));
+
+            // 각 행에 선수 배치
+            for (let i = 0; i < maxPlayers; i++) {
+                const row = document.createElement('tr');
+                nonEmptyTeams.forEach(players => {
+                    const cell = document.createElement('td');
+                    cell.textContent = players[i] || '';
+                    row.appendChild(cell);
+                });
+                tableBody.appendChild(row);
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('resultModal');
+            modal.style.display = 'none';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            const helpModal = document.getElementById('helpModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target == helpModal) {
+                helpModal.style.display = 'none';
+            }
+        }
+
+        function clickTeam(obj) {
+            const classes = ["", "jokki-yellow", "jokki-orange"];
+            const currentClass = obj.className;
+            const currentIndex = classes.indexOf(currentClass);
+            const nextIndex = (currentIndex + 1) % classes.length;
+            obj.className = classes[nextIndex];
+            saveToLocalStorage();
+        }
+
+        function showHelp() {
+            const helpModal = document.getElementById('helpModal');
+            helpModal.style.display = 'block';
+        }
+
+        function closeHelpModal() {
+            const helpModal = document.getElementById('helpModal');
+            helpModal.style.display = 'none';
+        }
+    </script>
+    <footer>
+        <p>© <span id="currentYear"></span> 운동 시작 하기 전. All rights reserved.</p>
+        <p>MIN YEONG JO</p>
+    </footer>
+    <script>
+        // 현재 연도 표시
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
