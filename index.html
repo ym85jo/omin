@@ -722,6 +722,8 @@
             if (event.target == helpModal) {
                 helpModal.style.display = 'none';
             }
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
         }
 
         function clickTeam(obj) {
@@ -742,14 +744,11 @@
             const helpModal = document.getElementById('helpModal');
             helpModal.style.display = 'none';
         }
+
+        
     </script>
     <footer>
-        <p>© <span id="currentYear"></span> 운동 시작 하기 전. All rights reserved.</p>
-        <p>MIN YEONG JO</p>
+        © 2025 Created by <a href="https://open.kakao.com/o/s0U8JTsh" target="_blank" style="color: inherit;">yeongmin.</a>
     </footer>
-    <script>
-        // 현재 연도 표시
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-    </script>
 </body>
 </html>
