@@ -8,6 +8,50 @@
     <style>
         body {
             font-size: 14px;
+            background-color: #f8f9fa;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+        .header {
+            background: #ffffff;
+            color: #1d1d1f;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .header::before {
+            display: none;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.5px;
+            color: #1d1d1f;
+        }
+        .clear-button {
+            background-color: #0071e3;
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 980px;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        .clear-button:hover {
+            background-color: #0077ED;
+            transform: translateY(-1px);
         }
         div.title{
             text-align : center;
@@ -121,6 +165,24 @@
             opacity: 1;
         }
         
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 12px;
+            color: #86868b;
+            background: #ffffff;
+            margin-top: 4rem;
+            border-top: 1px solid #d2d2d7;
+        }
+        footer a {
+            color: #0071e3;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: #0077ED;
+        }
     </style>
     <script>
 
@@ -151,7 +213,7 @@
                 sortTeam(targetTeam);
             }
             showToast(`${event.target.dataset.name} 선수가 마지막으로 이동되었습니다.`);
-            saveState();
+            makeGridAll();
         }
 
         function showToast(message, duration = 3000) {
@@ -221,6 +283,7 @@
                 if (targetTeam) {
                     targetTeam.appendChild(draggedElements[0]);
                     sortTeam(targetTeam);
+                    showToast(`${draggedElements[0].dataset.name} 선수가 Team ${targetTeam.dataset.teamno} 에 추가되었습니다.`);
                 }
             }
             
@@ -398,7 +461,11 @@
 </head>
 <body>
     <div class="toast-container"></div>
-    <div class="title">KickOff</div>
+    <div class="header">
+        <div class="header-content">
+            <h1 class="title">KickOff</h1>
+        </div>
+    </div>
     <hr/>
     <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto; display: flex; justify-content: space-between; align-items: center;">
         # 팀원 선정
@@ -534,9 +601,9 @@
 
         <hr/>
 
-        <footer style="text-align: center; padding-bottom: 20px; font-size: 14px; color: #888;">
+        <footer>
             © 2025 Created by <a href="https://open.kakao.com/o/s0U8JTsh" target="_blank" style="color: inherit;">yeongmin.</a>
-          </footer>
+        </footer>
 
 
     </div>
