@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>https://yeongmin.vercel.app</title>
+    <title>FS OHZZ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
     <style>
         body {
             font-size: 14px;
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
         }
         .header {
             background: #ffffff;
-            color: #1d1d1f;
+            color: #1a1a1a;
             padding: 2rem 0;
             margin-bottom: 2rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -37,10 +37,10 @@
             font-weight: 600;
             margin: 0;
             letter-spacing: -0.5px;
-            color: #1d1d1f;
+            color: #1a1a1a;
         }
         .clear-button {
-            background-color: #0071e3;
+            background-color: #333333;
             border: none;
             color: white;
             padding: 0.8rem 2rem;
@@ -50,7 +50,7 @@
             transition: all 0.3s ease;
         }
         .clear-button:hover {
-            background-color: #0077ED;
+            background-color: #4a4a4a;
             transform: translateY(-1px);
         }
         div.title{
@@ -78,8 +78,8 @@
         .team {
             min-height: 80px;
             padding: 5px;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            background: #ffffff;
             display: flex;
             flex-direction: row;
             align-items: flex-start;
@@ -89,7 +89,7 @@
         .draggable {
             padding: 5px;
             margin: 5px;
-            background: #007bff;
+            background: #333333;
             color: white;
             cursor: grab;
             text-align: center;
@@ -132,14 +132,14 @@
             text-align : center;
         }
         .delete-zone {
-            background: #FFE5E5;  /* 연한 빨간색으로 변경 */
-            border: 2px dashed #FF6B6B;  /* 부드러운 빨간색으로 변경 */
-            color: #FF6B6B;  /* 부드러운 빨간색으로 변경 */
+            background: #f8f8f8;
+            border: 2px dashed #666666;
+            color: #666666;
             padding: 10px;
             min-height: 40px;
             display: flex;
             justify-content: center;
-            margin-top : 4px;
+            margin-top: 4px;
         }
         
         /* 토스트 메시지 스타일 */
@@ -151,7 +151,7 @@
         }
         
         .toast {
-            background-color: #333;
+            background-color: #333333;
             color: white;
             padding: 12px 24px;
             border-radius: 4px;
@@ -169,19 +169,19 @@
             text-align: center;
             padding: 2rem 0;
             font-size: 12px;
-            color: #86868b;
+            color: #666666;
             background: #ffffff;
             margin-top: 4rem;
-            border-top: 1px solid #d2d2d7;
+            border-top: 1px solid #e0e0e0;
         }
         footer a {
-            color: #0071e3;
+            color: #333333;
             text-decoration: none;
             font-weight: 400;
             transition: color 0.3s ease;
         }
         footer a:hover {
-            color: #0077ED;
+            color: #666666;
         }
     </style>
     <script>
@@ -253,6 +253,7 @@
             
             namesInput.value = "";
             updatePlayerCount();
+            saveState();
             
             if (addedCount > 0) {
                 showToast(`${addedCount}명의 선수가 추가되었습니다.`);
@@ -463,10 +464,9 @@
     <div class="toast-container"></div>
     <div class="header">
         <div class="header-content">
-            <h1 class="title">KickOff</h1>
+            <h1 class="title">FS OHZZ</h1>
         </div>
     </div>
-    <hr/>
     <h1 style="font-size: 22px; font-weight:bold; margin: 28px auto; display: flex; justify-content: space-between; align-items: center;">
         # 팀원 선정
         <div>
