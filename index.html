@@ -181,7 +181,7 @@
 
       .unassigned-players {
         width: auto;
-        margin-bottom: 30px;
+        margin-bottom: 2px;
         min-height: 100px;
         transition: all 0.2s;
         overflow-x: auto;
@@ -398,6 +398,25 @@
       footer p {
         margin: 5px 0;
       }
+
+      .delete-zone {
+        background: #f8f8f8;
+        border: 2px dashed #dc2626;
+        color: #dc2626;
+        padding: 8px;
+        min-height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0 30px 0;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        transition: background 0.2s, border-color 0.2s;
+      }
+      .delete-zone.drag-over {
+        background: #ffeaea;
+        border-color: #b91c1c;
+      }
     </style>
   </head>
   <body>
@@ -450,6 +469,7 @@
         <div class="unassigned-players" id="unassignedPlayers">
           <h3>대기자 명단</h3>
         </div>
+        <div class="delete-zone" id="deleteZone"><span>명단제외</span></div>
         <div class="team-list" id="teamList"></div>
       </div>
     </div>
@@ -492,6 +512,10 @@
             <li><b>팀 색상</b>: 팀 이름 클릭 시 색상(기본→노랑→주황) 변경</li>
             <li><b>결과</b>: '결과' 클릭 시 현재 팀 상태를 표로 확인</li>
             <li>
+              <b>명단제외</b>: 제외할 선수를 '명단제외' 영역으로 드래그하면
+              명단에서 삭제됩니다.
+            </li>
+            <li>
               <b>초기화/저장</b>: '초기화'로 모든 데이터 삭제, 변경사항은 자동
               저장
             </li>
@@ -532,11 +556,17 @@
       window.onload = function () {
         const teamList = document.getElementById("teamList");
         const unassignedPlayers = document.getElementById("unassignedPlayers");
+        const deleteZone = document.getElementById("deleteZone");
 
         // 미배정 선수 영역에 드래그 앤 드롭 이벤트 추가
         unassignedPlayers.addEventListener("dragover", handleDragOver);
         unassignedPlayers.addEventListener("dragleave", handleDragLeave);
         unassignedPlayers.addEventListener("drop", handleDrop);
+
+        // 쓰레기통 영역 드래그 앤 드롭 이벤트 추가
+        deleteZone.addEventListener("dragover", handleDeleteDragOver);
+        deleteZone.addEventListener("dragleave", handleDeleteDragLeave);
+        deleteZone.addEventListener("drop", handleDeleteDrop);
 
         teamList.innerHTML = "";
         for (let i = 0; i < 4; i++) {
@@ -666,6 +696,25 @@
 
         if (playerElement) {
           e.currentTarget.appendChild(playerElement);
+          saveToLocalStorage();
+        }
+      }
+
+      function handleDeleteDragOver(e) {
+        e.preventDefault();
+        e.currentTarget.classList.add("drag-over");
+      }
+
+      function handleDeleteDragLeave(e) {
+        e.currentTarget.classList.remove("drag-over");
+      }
+
+      function handleDeleteDrop(e) {
+        e.preventDefault();
+        e.currentTarget.classList.remove("drag-over");
+        const playerElement = document.querySelector(".player.dragging");
+        if (playerElement) {
+          playerElement.remove();
           saveToLocalStorage();
         }
       }
