@@ -420,7 +420,33 @@
         </div>
       </div>
       <div class="output-section">
-        <h2>TEAM</h2>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h2>TEAM</h2>
+          <div style="display: flex; gap: 10px; align-items: center">
+            <select
+              id="teamCount"
+              style="padding: 8px; border: 1px solid #ccc; border-radius: 4px"
+            >
+              <option value="2">2팀</option>
+              <option value="3">3팀</option>
+              <option value="4">4팀</option>
+            </select>
+            <button
+              class="primary-button"
+              onclick="randomAssign()"
+              style="padding: 8px 16px"
+            >
+              Random 배정
+            </button>
+          </div>
+        </div>
+
         <div class="unassigned-players" id="unassignedPlayers">
           <h3>대기자 명단</h3>
         </div>
@@ -816,6 +842,35 @@
       function closeHelpModal() {
         const helpModal = document.getElementById("helpModal");
         helpModal.style.display = "none";
+      }
+
+      function randomAssign() {
+        const teamCount = document.getElementById("teamCount").value;
+        const teams = document.querySelectorAll(".team");
+        const unassignedPlayers = document.getElementById("unassignedPlayers");
+
+        // 모든 팀에서 선수들을 대기자 명단으로 이동
+        teams.forEach((team) => {
+          const teamPlayers = Array.from(team.querySelectorAll(".player"));
+          teamPlayers.forEach((player) => {
+            unassignedPlayers.appendChild(player);
+          });
+        });
+
+        // 대기자 명단의 모든 선수들을 가져와서 섞기
+        const players = Array.from(
+          unassignedPlayers.querySelectorAll(".player")
+        );
+        const shuffledPlayers = players.sort(() => Math.random() - 0.5);
+
+        // 섞인 선수들을 팀에 재배정
+        for (let i = 0; i < shuffledPlayers.length; i++) {
+          const player = shuffledPlayers[i];
+          const team = teams[i % teamCount];
+          team.appendChild(player);
+        }
+
+        saveToLocalStorage();
       }
     </script>
     <footer>
