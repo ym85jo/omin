@@ -16,6 +16,7 @@
         font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
           Roboto, sans-serif;
         max-width: 1200px;
+        min-width: 660px;
         margin: 0 auto;
         padding: 40px 20px;
         background-color: #f9fafb;
@@ -39,7 +40,7 @@
 
       .container {
         display: flex;
-        gap: 40px;
+        gap: 26px;
         background-color: white;
         padding: 30px;
         border-radius: 16px;
@@ -124,7 +125,7 @@
 
       .team,
       .unassigned-players {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         padding: 20px;
         border: 2px solid var(--border-color);
         border-radius: 12px;
@@ -171,7 +172,7 @@
       .team-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px;
         min-width: 0;
       }
 
@@ -426,17 +427,17 @@
     <div class="container">
       <div class="input-section">
         <h2>선수 명단 입력</h2>
-        <p>참가할 선수들의 이름을 한 줄에 한 명씩 입력해주세요:</p>
+        <p>선수 이름을 한 줄에 한 명씩 입력</p>
         <textarea
           id="playerList"
           placeholder="홍길동&#10;김철수&#10;이영희&#10;..."
         ></textarea>
         <div class="button-group">
           <button class="primary-button" onclick="addInitialPlayers()">
-            선수 추가
+            추가
           </button>
           <button class="secondary-button" onclick="showResults()">결과</button>
-          <button class="danger-button" onclick="clearAllData()">초기화</button>
+          <button class="danger-button" onclick="clearAllData()">Reset</button>
         </div>
       </div>
       <div class="output-section">
@@ -462,7 +463,7 @@
               onclick="randomAssign()"
               style="padding: 8px 16px"
             >
-              Random 배정
+              Random
             </button>
           </div>
         </div>
@@ -501,24 +502,32 @@
         <div class="help-content">
           <ul style="line-height: 2">
             <li>
-              <b>선수 추가</b>: 왼쪽에 이름을 한 줄씩 입력 후 '선수 추가' 클릭
+              <b>선수 추가</b>: 왼쪽 입력창에 이름을 한 줄에 한 명씩 입력한 뒤,
+              '추가' 버튼을 누르면 대기자 명단에 등록됩니다.
             </li>
             <li>
-              <b>팀 배정</b>: 미배정 선수 또는 팀에서 드래그로 이동 (최대 4팀)
+              <b>팀 배정</b>: 대기자 명단 또는 팀 내의 선수를 원하는 팀으로
+              드래그하여 이동할 수 있습니다. (최대 4팀)
             </li>
             <li>
-              <b>랜덤 배정</b>: 'Random 배정' 버튼 클릭 시 대기자 명단의 모든
-              선수가 선택한 팀 수에 맞게 무작위로 팀에 배정
+              <b>랜덤 배정</b>: 'Random' 버튼을 누르면 대기자 명단의 모든 선수가
+              선택한 팀 수에 맞게 무작위로 팀에 배정됩니다.
             </li>
-            <li><b>팀 색상</b>: 팀 이름 클릭 시 색상(기본→노랑→주황) 변경</li>
-            <li><b>결과</b>: '결과' 클릭 시 현재 팀 상태를 표로 확인</li>
             <li>
-              <b>명단제외</b>: 제외할 선수를 '명단제외' 영역으로 드래그하면
+              <b>팀 색상 변경</b>: 팀 이름(Team 1, Team 2 등)을 클릭하면 색상이
+              기본 → 노랑 → 주황 순으로 변경됩니다.
+            </li>
+            <li>
+              <b>결과 확인</b>: '결과' 버튼을 누르면 현재 팀 구성을 표로 확인할
+              수 있습니다.
+            </li>
+            <li>
+              <b>명단 제외</b>: 제외할 선수를 '명단제외' 영역으로 드래그하면
               명단에서 삭제됩니다.
             </li>
             <li>
-              <b>초기화/저장</b>: '초기화'로 모든 데이터 삭제, 변경사항은 자동
-              저장
+              <b>초기화/저장</b>: 'Reset' 버튼을 누르면 모든 데이터가
+              삭제됩니다. 변경사항은 자동으로 저장됩니다.
             </li>
           </ul>
         </div>
